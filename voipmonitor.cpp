@@ -1037,6 +1037,7 @@ int get_customer_by_ip_flush_period = 1;
 char opt_pidfile[4098] = "/var/run/voipmonitor.pid";
 
 char user_filter[1024*20] = "";
+char user_filter2[1024*20] = "";
 eSnifferMode sniffer_mode = snifferMode_read_from_interface;
 char ifname[1024];	// Specifies the name of the network device to use for 
 			// the network lookup, for example, eth0
@@ -6349,6 +6350,7 @@ void cConfig::addConfigItems() {
 			normal();
 			addConfigItem(new FILE_LINE(42135) cConfigItem_yesno("promisc", &opt_promisc));
 			addConfigItem(new FILE_LINE(42136) cConfigItem_string("filter", user_filter, sizeof(user_filter)));
+			addConfigItem(new FILE_LINE(42136) cConfigItem_string("filter2", user_filter2, sizeof(user_filter2)));
 			addConfigItem(new FILE_LINE(42137) cConfigItem_ip_port("mirror_bind", &opt_pcap_queue_receive_from_ip_port));
 			addConfigItem((new FILE_LINE(42138) cConfigItem_string("mirror_bind_ip"))
 				->setNaDefaultValueStr()
