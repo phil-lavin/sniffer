@@ -109,6 +109,7 @@ extern char *webrtcportmatrix;
 extern char *diameter_tcp_portmatrix;
 extern MirrorIP *mirrorip;
 extern char user_filter[10*2048];
+extern char user_filter2[10*2048];
 extern Calltable *calltable;
 extern volatile int calls_counter;
 extern volatile int calls_for_store_counter;
@@ -261,6 +262,8 @@ extern PcapQueue_outputThread *pcapQueueQ_outThread_detach2;
 extern unsigned int glob_ssl_calls;
 
 bool packetbuffer_memory_is_full = false;
+
+static char uf[10*2048];
 
 #include "sniff_inline.h"
 
@@ -4033,12 +4036,23 @@ bool PcapQueue_readFromInterface_base::startCapture(string *error, sDpdkConfig *
 			mirrorip = new FILE_LINE(15024) MirrorIP(opt_mirrorip_src, opt_mirrorip_dst);
 		}
 	}
-	if(*user_filter != '\0') {
+
+	// Use correct filter
+	if (this->getInterfaceName(true) == "ens5") {
+		strcpy_null_term(uf, user_filter);
+	}
+	else if (this->getInterfaceName(true) == "enp0s5") {
+		strcpy_null_term(uf, user_filter2);
+	}
+
+	if(*uf != '\0') {
+		syslog(LOG_NOTICE, "packetbuffer - %s: setting filter: %s", this->getInterfaceName().c_str(), uf);
+
 		// Compile and apply the filter
 		struct bpf_program fp;
-		if (pcap_compile(this->pcapHandle, &fp, user_filter, 0, this->interfaceMask) == -1) {
+		if (pcap_compile(this->pcapHandle, &fp, uf, 0, this->interfaceMask) == -1) {
 			char user_filter_err[2048];
-			snprintf(user_filter_err, sizeof(user_filter_err), "%.2000s%s", user_filter, strlen(user_filter) > 2000 ? "..." : "");
+			snprintf(user_filter_err, sizeof(user_filter_err), "%.2000s%s", uf, strlen(uf) > 2000 ? "..." : "");
 			snprintf(errorstr, sizeof(errorstr), "packetbuffer - %s: can not parse filter %s: %s", this->getInterfaceName().c_str(), user_filter_err, pcap_geterr(this->pcapHandle));
 			if(opt_fork) {
 				ostringstream outStr;
@@ -4049,7 +4063,7 @@ bool PcapQueue_readFromInterface_base::startCapture(string *error, sDpdkConfig *
 		}
 		if (pcap_setfilter(this->pcapHandle, &fp) == -1) {
 			char user_filter_err[2048];
-			snprintf(user_filter_err, sizeof(user_filter_err), "%.2000s%s", user_filter, strlen(user_filter) > 2000 ? "..." : "");
+			snprintf(user_filter_err, sizeof(user_filter_err), "%.2000s%s", uf, strlen(uf) > 2000 ? "..." : "");
 			snprintf(errorstr, sizeof(errorstr), "packetbuffer - %s: can not install filter %s: %s", this->getInterfaceName().c_str(), user_filter_err, pcap_geterr(this->pcapHandle));
 			if(opt_fork) {
 				ostringstream outStr;
