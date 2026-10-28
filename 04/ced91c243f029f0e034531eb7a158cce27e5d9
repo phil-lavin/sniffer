@@ -1,0 +1,23 @@
+config/voipmonitor.conf
+  s_16bd92b0a264b1::t_38cbee1c58de75 967-970
+ssl_dssl.cpp
+  s_16bd92b0a264b1::t_d5309a7250fbde 1250-1257,1264,1267-1268
+voipmonitor.cpp
+  s_16bd92b0a264b1::t_164dec927b680a 1391
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "04ced91c243f029f0e034531eb7a158cce27e5d9",
+  "prompts": {},
+  "sessions": {
+    "s_16bd92b0a264b1": {
+      "agent_id": {
+        "tool": "kiro",
+        "id": "sess_1e51e170-1687-4287-9955-b71d8ef08f35",
+        "model": "auto"
+      },
+      "human_author": "Phil Lavin <phil.lavin@vonage.com>"
+    }
+  }
+}
