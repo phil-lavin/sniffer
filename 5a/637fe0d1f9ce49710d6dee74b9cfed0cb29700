@@ -1,0 +1,19 @@
+tools/ssl_keylogger/sslkeylog.cpp
+  s_16bd92b0a264b1::t_daf32be28b65e5 862
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5a637fe0d1f9ce49710d6dee74b9cfed0cb29700",
+  "prompts": {},
+  "sessions": {
+    "s_16bd92b0a264b1": {
+      "agent_id": {
+        "tool": "kiro",
+        "id": "sess_1e51e170-1687-4287-9955-b71d8ef08f35",
+        "model": "auto"
+      },
+      "human_author": "Phil Lavin <phil.lavin@vonage.com>"
+    }
+  }
+}
